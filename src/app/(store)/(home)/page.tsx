@@ -3,10 +3,13 @@ import Link from 'next/link'
 
 import { Product } from '@/data/types/product'
 import { api } from '@/data/api'
+
 import { priceFormatter } from '@/utils/priceFormatter'
 
 async function getFeaturedProducts(): Promise<Product[]> {
-  const response = await api('/products/featured')
+  const response = await api('/products/featured', {
+    cache: 'no-store',
+  })
 
   const products = await response.json()
 
@@ -43,7 +46,7 @@ export default async function Home() {
       {otherProducts.map((product) => (
         <Link
           key={product.id}
-          href="/"
+          href={`/products/${product.slug}`}
           className="group relative col-span-3 row-span-3 rounded-lg bg-zinc-900 overflow-hidden flex justify-center items-center"
         >
           <Image
